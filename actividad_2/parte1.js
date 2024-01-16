@@ -14,12 +14,11 @@ const fetchPokemon = fetch("data/pokemon.json")
             pokePeso.push(dades[f].weight)
 
 
-            lista_pokemons[f] = [dades[f].id, dades[f].img,dades[f].name,dades[f].weight];
+            lista_pokemons[f] = [dades[f].id, dades[f].img, dades[f].name, dades[f].weight];
 
         }
     });
 
-console.table(lista_pokemons);
 
 function reload() {
     location.reload();
@@ -39,6 +38,8 @@ function orderList(opcion) {
 function ordenar_ascendente() {
 
 
+    /*
+
     console.log("Ordenado ascendente");
     for (let a = 0; a < todos.length; a++) {
         todos[a].sort();
@@ -47,10 +48,30 @@ function ordenar_ascendente() {
     for (let d = 0; d < todos.length; d++) {
         console.log(todos[d]);
     }
+
+    */
+
 }
 
 
 function ordenar_descendente() {
+/*
+    let lista = [];
+    for (let y = lista_pokemons.length; y >= 0; y--) {
+        lista.push(lista_pokemons[y]);
+    }
+    //ordena por id
+    console.table(lista);
+
+ */
+
+    console.log("Ordenado ascendente por nombre");
+    lista_pokemons.sort((a, b) => a[2].localeCompare(b[2]));
+    lista_pokemons.reverse((a, b) => a[2].localeCompare(b[2]));
+    console.table(lista_pokemons);
+    printList1(lista_pokemons);
+    /*
+
 
     console.log("Ordenado descendente");
     for (let a = 0; a < todos.length; a++) {
@@ -61,12 +82,41 @@ function ordenar_descendente() {
     for (let d = 0; d < todos.length; d++) {
         console.log(todos[d]);
     }
+
+     */
 }
 
 
 function searchList() {
     let buscar = prompt("Ingrese lo que desea buscar");
 
+}
+
+
+//funcion que vuelve a imprimir
+function printList1(lista_pokemons) {
+    let lista = document.getElementById("resultados");
+    let columna = `<table>`;
+
+    columna += `<tr>
+        <th> # </th>
+        <th> Imagen </th>
+        <th> Nombre </th>
+        <th> Peso </th>
+    </tr>`;
+
+    for (let i = 0; i < lista_pokemons.length; i++) {
+        columna += `<tr>
+            <td> '${lista_pokemons[i][0]}' </td>
+            <td> <img src='${lista_pokemons[i][1]}' > </td>
+            <td> '${lista_pokemons[i][2]}' </td>
+            <td> '${lista_pokemons[i][3]}' </td>
+        </tr>`;
+    }
+
+    columna += `</table>`;
+
+    lista.innerHTML = columna;  // Actualizar el contenido del elemento "resultados"
 }
 
 function printList() {
@@ -80,18 +130,18 @@ function printList() {
         <th> Peso </th>
     </tr>`;
 
-    for (let i = 0, f = 0, w = 0, l = 0; i < pokeId.length, f < pokemons.length, w < pokeNombre.length, l < pokePeso.length; i++, w++, f++, l++) {
+    for (let i = 0; i < lista_pokemons.length; i++) {
         columna += `<tr>
-            <td> '${pokeId[i]}' </td>
-            <td> <img src='${pokemons[f]}' > </td>
-            <td> '${pokeNombre[w]}' </td>
-            <td> '${pokePeso[l]}' </td>
+            <td> '${lista_pokemons[i][0]}' </td>
+            <td> <img src='${lista_pokemons[i][1]}' > </td>
+            <td> '${lista_pokemons[i][2]}' </td>
+            <td> '${lista_pokemons[i][3]}' </td>
         </tr>`;
     }
 
     columna += `</table>`;
 
-   lista.innerHTML = (`${columna}`);
+    lista.innerHTML = columna;  // Actualizar el contenido del elemento "resultados"
 }
 
 
