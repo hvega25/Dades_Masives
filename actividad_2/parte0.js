@@ -55,6 +55,6 @@ Promise.all(promesas)
             lista[t] = [nombres_poke[t], nombres_muni[t], nombres_movies[t], nombres_mete [t]];
         }
 
-        console.table(lista);
+        console.table(lista );
     })
     .catch(error => console.error("Error al cargar los datos:", error));

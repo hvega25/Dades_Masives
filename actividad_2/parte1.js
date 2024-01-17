@@ -38,60 +38,81 @@ function orderList(opcion) {
 function ordenar_ascendente() {
 
 
-    /*
+    console.log("Ordenado ascendente por nombre");
+    lista_pokemons.sort((a, b) => a[2].localeCompare(b[2]));
+    printList1(lista_pokemons);
 
-    console.log("Ordenado ascendente");
-    for (let a = 0; a < todos.length; a++) {
-        todos[a].sort();
-    }
-
-    for (let d = 0; d < todos.length; d++) {
-        console.log(todos[d]);
-    }
-
-    */
 
 }
 
 
 function ordenar_descendente() {
-/*
-    let lista = [];
-    for (let y = lista_pokemons.length; y >= 0; y--) {
-        lista.push(lista_pokemons[y]);
-    }
-    //ordena por id
-    console.table(lista);
+    /*
+        console.log("Ordenado descendente por id");
+        lista_pokemons.reverse((a, b) => a[0].localeCompare(b[0]));
+        printList1(lista_pokemons);
 
- */
+    */
 
-    console.log("Ordenado ascendente por nombre");
+    console.log("Ordenado descendente por nombre");
     lista_pokemons.sort((a, b) => a[2].localeCompare(b[2]));
     lista_pokemons.reverse((a, b) => a[2].localeCompare(b[2]));
-    console.table(lista_pokemons);
+
     printList1(lista_pokemons);
+
     /*
 
+           console.log("Ordenado descendente");
+           for (let a = 0; a < todos.length; a++) {
+               todos[a].sort();
+               todos[a].reverse();
+           }
 
-    console.log("Ordenado descendente");
-    for (let a = 0; a < todos.length; a++) {
-        todos[a].sort();
-        todos[a].reverse();
-    }
+           for (let d = 0; d < todos.length; d++) {
+               console.log(todos[d]);
+           }
+    */
 
-    for (let d = 0; d < todos.length; d++) {
-        console.log(todos[d]);
-    }
-
-     */
 }
 
 
 function searchList() {
-    let buscar = prompt("Ingrese lo que desea buscar");
+    var buscar = prompt("Ingrese lo que desea buscar");
 
+    let lista_encontrados = [];
+    let poke;
+
+    let contador = 0;
+
+    //importante al crear la expresión
+    const ex = new RegExp(buscar, 'gi');
+
+    for (let i = 0; i < lista_pokemons.length; i++) {
+        let nombre = lista_pokemons[i][2];
+        if (nombre.match(ex)) {
+            lista_encontrados[contador] = lista_pokemons[i]
+            contador++;
+        }
+    }
+
+    printList1(lista_encontrados)
 }
 
+
+function calcular_mediana() {
+
+    for(let a =0; a < lista_pokemons.length; a++){
+        let prueba = lista_pokemons[a][3].split(" ");
+        lista_pokemons[a][3] = prueba[0];
+    }
+
+    console.log("Ordenado descendente por peso");
+    lista_pokemons.sort((a, b) => a[3].localeCompare(b[3]));
+
+
+    printList1(lista_pokemons);
+
+}
 
 //funcion que vuelve a imprimir
 function printList1(lista_pokemons) {
