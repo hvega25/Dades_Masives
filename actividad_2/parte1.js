@@ -1,31 +1,10 @@
-/*let tercer_dato = [], primer_dato = [], segundo_dato = [], cuarto_dato = [];
-let lista_pokemons = [];
+let lista = [];
+let movies = [], meteoritos = [], poke = [], muni = [];
 
-//arreglos
-let municipios  = [];
-let lista_municipios = [];
+//variable momentanea para guardar el dato cargado
+let carga = [], sel;
 
-/*
-// POKEMONS
-const fetchPokemon = fetch("data/pokemon.json")
-    .then((response) => response.json())
-    .then((data) => {
-        dades = data.pokemon;
-
-        for (let f = 0; f < dades.length; f++) {
-            primer_dato.push(dades[f].id);
-            segundo_dato.push(dades[f].img);
-            tercer_dato.push(dades[f].name);
-            cuarto_dato.push(dades[f].weight)
-
-            lista_pokemons[f] = [dades[f].id, dades[f].img, dades[f].name, dades[f].weight];
-
-        }
-    });
-
-
-*/
-let list1 = [];
+//arreglo de json que serán usados para la carga de datos
 const urls = [
     "data/pokemon.json",
     "data/municipis.json",
@@ -33,61 +12,60 @@ const urls = [
     "data/movies.json"
 ];
 
+//ejecución de la carga de datos
 const promesas = urls.map(url =>
     fetch(url)
         .then(response => response.json())
 );
 
+
+//Se hace persistencia de datos y se carga 4 arreglos
 Promise.all(promesas)
     .then(data => {
+
+        //Pokemons
         const pokemonData = data[0];
-        let nombres_poke = [];
 
 
-        for (let g = 0; g < data[0].pokemon.length; g++) {
-            nombres_poke.push(pokemonData.pokemon[g].name);
+        //nombres_poke.push(pokemonData.pokemon[g].name);
+        for (let g = 0; g < pokemonData.pokemon.length; g++) {
+            poke[g] = [pokemonData.pokemon[g].id, pokemonData.pokemon[g].img, pokemonData.pokemon[g].name, pokemonData.pokemon[g].weight]
         }
 
-        //     console.log(nombres_poke);
 
-
+        //Municipios
         const municipisData = data[1];
-        let primer_dato = [], segundo_dato = [], tercer_dato = [], cuarto_dato = [];
 
-        // municipi_nom, ine ,municipi_escut, altitud
-
-        for (let f = 0; f < data[1].elements.length; f++) {
-            list1[f] = [municipisData.elements[f].ine, municipisData.elements[f].municipi_escut, municipisData.elements[f].municipi_nom, municipisData.elements[f].altitud];
+        for (let f = 0; f < municipisData.elements.length; f++) {
+            muni[f] = [municipisData.elements[f].ine, municipisData.elements[f].municipi_escut, municipisData.elements[f].municipi_nom, municipisData.elements[f].altitud];
         }
 
-        console.table(list1);
 
+        //Meteoritos
         const meteoritoData = data[2];
-        let nombres_mete = [];
 
-
-        for (let s = 0; s < data[2].length; s++) {
-            nombres_mete.push(data[2][s].name)
+        for (let s = 0; s < meteoritoData.length; s++) {
+            meteoritos[s] = [meteoritoData[s].id, meteoritoData[s].mass, meteoritoData[s].name, meteoritoData[s].fall];
         }
-        // console.table(nombres_mete);
 
 
+        //Movies
         const movieData = data[3];
-        let nombres_movies = [];
 
-        for (let o = 0; o < data[3].movies.length; o++) {
-            nombres_movies.push(data[3].movies[o].title)
+        for (let o = 0; o < movieData.movies.length; o++) {
+            movies[o] = [movieData.movies[o].year, movieData.movies[o].url, movieData.movies[o].title, movieData.movies[o].rating];
         }
-        //console.table(nombres_movies);
 
-     /*   for (let t = 0; t < nombres_mete.length; t++) {
-            lista[t] = [nombres_poke[t], nombres_muni[t], nombres_movies[t], nombres_mete [t]];
-        }
-*/
+        /*  Esto es prueba
+         //carga de arreglos en un arreglo
+          for (let t = 0; t < meteoritoData.length; t++) {
+              lista[t] = [poke[t], muni[t], movies[t], meteoritos [t]];
+          }
 
-        //console.table(lista);
+          //console.table (lista[0][0]);
+          //console.table(lista);
 
-        printList();
+          //printList();*/
     })
     .catch(error => console.error("Error al cargar los datos:", error));
 
@@ -109,10 +87,9 @@ function orderList(opcion) {
 
 function ordenar_ascendente() {
 
-
     console.log("Ordenado ascendente por nombre");
-    lista_pokemons.sort((a, b) => a[2].localeCompare(b[2]));
-    printList1(lista_pokemons);
+    carga.sort((a, b) => a[2].localeCompare(b[2]));
+    printList1(carga, sel);
 
 
 }
@@ -121,29 +98,17 @@ function ordenar_ascendente() {
 function ordenar_descendente() {
     /*
         console.log("Ordenado descendente por id");
-        lista_pokemons.reverse((a, b) => a[0].localeCompare(b[0]));
-        printList1(lista_pokemons);
+        carga.reverse((a, b) => a[0].localeCompare(b[0]));
+        printList1(carga, sel);
 
     */
 
     console.log("Ordenado descendente por nombre");
-    lista_pokemons.sort((a, b) => a[2].localeCompare(b[2]));
-    lista_pokemons.reverse((a, b) => a[2].localeCompare(b[2]));
+    carga.sort((a, b) => a[2].localeCompare(b[2]));
+    carga.reverse((a, b) => a[2].localeCompare(b[2]));
 
-    printList1(lista_pokemons);
 
-    /*
-
-           console.log("Ordenado descendente");
-           for (let a = 0; a < todos.length; a++) {
-               todos[a].sort();
-               todos[a].reverse();
-           }
-
-           for (let d = 0; d < todos.length; d++) {
-               console.log(todos[d]);
-           }
-    */
+    printList1(carga, sel);
 
 }
 
@@ -159,36 +124,61 @@ function searchList() {
     //importante al crear la expresión
     const ex = new RegExp(buscar, 'gi');
 
-    for (let i = 0; i < lista_pokemons.length; i++) {
-        let nombre = lista_pokemons[i][2];
+    for (let i = 0; i < carga.length; i++) {
+        let nombre = carga[i][2];
         if (nombre.match(ex)) {
-            lista_encontrados[contador] = lista_pokemons[i]
+            lista_encontrados[contador] = carga[i]
             contador++;
         }
     }
 
-    printList1(lista_encontrados)
+    printList1(lista_encontrados, sel)
 }
 
 
 function calcular_mediana() {
     let peso_mediana = 0;
 
-    for (let a = 0; a < lista_pokemons.length; a++) {
-        let prueba = lista_pokemons[a][3].split(" ");
-        peso_mediana = peso_mediana + parseFloat(prueba[0]);
+
+    for (let a = 0; a < carga.length; a++) {
+        if (sel === "municipis" || sel === "movies") {
+            if (carga[a][3].trim() === "" ) {
+                  peso_mediana = peso_mediana + 0;
+            } else {
+                peso_mediana = peso_mediana + parseFloat(carga[a][3]);
+            }
+
+        }
+        if (sel === "pokemon") {
+            let prueba = carga[a][3].split(" ");
+            peso_mediana = peso_mediana + parseFloat(prueba[0]);
+        }
+
+        if (sel === "meteorites") {
+         if (carga[a][1] == undefined ) {
+                  peso_mediana = peso_mediana + 0;
+            } else {
+                peso_mediana = peso_mediana + parseFloat(carga[a][1]);
+            }
+        }
+
     }
 
-
     let varable = document.getElementById("mediana_peso");
-    varable.innerHTML = "La mediana de los pesos del pokemon es: " + (peso_mediana / lista_pokemons.length).toFixed(2) + " kg";
-    // printList1(lista_pokemons);
+    varable.innerHTML = "La mediana es: " + (peso_mediana / carga.length).toFixed(2);
+
 
 }
 
 //funcion que vuelve a imprimir
-function printList1(lista_pokemons) {
+function printList1(array, sel) {
     let lista = document.getElementById("resultados");
+
+
+    const cabeceras = [["Id", "Imagen", "Nombre", "Peso"], ["Código Postal", "Logo", "Nombre", "Altitud"],
+        ["Título", "Logo", "Año", "Rating"], ["ID", "Masa", "Nombre", "Estado"]
+    ];
+    const opciones = ["pokemon", "municipis", "movies", "meteorites"];
 
     let columna = '<style>\n' +
         'table, th, td {\n' +
@@ -197,20 +187,34 @@ function printList1(lista_pokemons) {
         '</style>';
     columna = columna + `<table>`;
 
-    columna += `<tr>
-        <th> # </th>
-        <th> Imagen </th>
-        <th> Nombre </th>
-        <th> Peso </th>
+    for (let u = 0; u < opciones.length; u++) {
+        if (sel === opciones[u]) {
+            columna += `<tr>
+        <th> ${cabeceras[u][0]} </th>
+        <th> ${cabeceras[u][1]} </th>
+        <th> ${cabeceras[u][2]} </th>
+        <th> ${cabeceras[u][3]} </th>
     </tr>`;
+        }
+    }
 
-    for (let i = 0; i < lista_pokemons.length; i++) {
-        columna += `<tr>
-            <td> '${lista_pokemons[i][0]}' </td>
-            <td> <img src='${lista_pokemons[i][1]}' > </td>
-            <td> '${lista_pokemons[i][2]}' </td>
-            <td> '${lista_pokemons[i][3]}' </td>
+    for (let i = 0; i < array.length; i++) {
+        if (sel === "meteorites") {
+            columna += `<tr>
+            <td> '${array[i][0]}' </td>
+            <td> '${array[i][1]}' </td>
+            <td> '${array[i][2]}' </td>
+            <td> '${array[i][3]}' </td>
         </tr>`;
+        } else {
+            columna += `<tr>
+            <td> '${array[i][0]}' </td>
+            <td> <img src='${array[i][1]}' > </td>
+            <td> '${array[i][2]}' </td>
+            <td> '${array[i][3]}' </td>
+        </tr>`;
+        }
+
     }
 
     columna += `</table>`;
@@ -220,30 +224,108 @@ function printList1(lista_pokemons) {
 
 
 //imprime en pantalla una pantalla que se muestra la tabla
-function printList() {
-    let lista = document.getElementById("resultados");
+function printList(seleccion) {
 
+    sel = seleccion;
+    const cabeceras = [["Id", "Imagen", "Nombre", "Peso"], ["Código Postal", "Logo", "Nombre", "Altitud"],
+        ["Año", "Logo", "Título", "Rating"], ["ID", "Masa", "Nombre", "Estado"]
+    ];
+    let lista = document.getElementById("resultados");
+    const opciones = ["pokemon", "municipis", "movies", "meteorites"];
+
+    opciones.forEach(opcion => {
+        if (opcion !== seleccion) {
+            document.getElementById(opcion).checked = false;
+        }
+    });
     let columna = '<style>\n' +
         'table, th, td {\n' +
         '  border:1px solid black;\n' +
         '};\n' +
         '</style>';
     columna = columna + `<table>`;
-    columna += `<tr>
-        <th> # </th>
-        <th> Imagen </th>
-        <th> Nombre </th>
-        <th> Peso </th>
+
+
+    switch (seleccion) {
+        case opciones[0]:
+            carga = poke;
+
+            columna += `<tr>
+        <th> ${cabeceras[0][0]} </th>
+        <th> ${cabeceras[0][1]} </th>
+        <th> ${cabeceras[0][2]} </th>
+        <th> ${cabeceras[0][3]} </th>
     </tr>`;
 
-    for (let i = 0; i < list1.length; i++) {
-        columna += `<tr>
-            <td> '${list1[i][0]}' </td>
-            <td> <img src='${list1[i][1]}' > </td>
-            <td> '${list1[i][2]}' </td>
-            <td> '${list1[i][3]}' </td>
+
+            for (let i = 0; i < poke.length; i++) {
+                columna += `<tr>
+            <td> '${poke[i][0]}' </td>
+            <td> <img src='${poke[i][1]}' > </td>
+            <td> '${poke[i][2]}' </td>
+            <td> '${poke[i][3]}' </td>
         </tr>`;
+            }
+
+            break;
+        case opciones[1]:
+
+            carga = muni;
+            columna += `<tr>
+        <th> ${cabeceras[1][0]} </th>
+        <th> ${cabeceras[1][1]} </th>
+        <th> ${cabeceras[1][2]} </th>
+        <th> ${cabeceras[1][3]} </th>
+    </tr>`;
+
+
+            for (let i = 0; i < muni.length; i++) {
+                columna += `<tr>
+            <td> '${muni[i][0]}' </td>
+            <td> <img src='${muni[i][1]}' > </td>
+            <td> '${muni[i][2]}' </td>
+            <td> '${muni[i][3]}' </td>
+        </tr>`;
+            }
+
+            break;
+        case opciones[2]:
+            carga = movies;
+            columna += `<tr>
+        <th> ${cabeceras[2][0]} </th>
+        <th> ${cabeceras[2][1]} </th>
+        <th> ${cabeceras[2][2]} </th>
+        <th> ${cabeceras[2][3]} </th>
+    </tr>`;
+
+            for (let i = 0; i < movies.length; i++) {
+                columna += `<tr>
+            <td> '${movies[i][0]}' </td>
+            <td> <img src='${movies[i][1]}' > </td>
+            <td> '${movies[i][2]}' </td>
+            <td> '${movies[i][3]}' </td>
+        </tr>`;
+            }
+            break;
+        case opciones[3]:
+            carga = meteoritos;
+            columna += `<tr>
+        <th> ${cabeceras[3][0]} </th>
+        <th> ${cabeceras[3][1]} </th>
+        <th> ${cabeceras[3][2]} </th>
+        <th> ${cabeceras[3][3]} </th>
+    </tr>`;
+            for (let i = 0; i < meteoritos.length; i++) {
+                columna += `<tr>
+            <td> '${meteoritos[i][0]}' </td>
+            <td> ${meteoritos[i][1]}'  </td>
+            <td> '${meteoritos[i][2]}' </td>
+            <td> '${meteoritos[i][3]}' </td>
+        </tr>`;
+            }
+            break;
     }
+
 
     columna += `</table>`;
 
@@ -251,11 +333,11 @@ function printList() {
 }
 
 
-
-/*
-Promise.all([])
-    .then(() => {
-
+//Para quitar la selección anterior
+function recarga() {
+    var radios = document.querySelectorAll('input[type="radio"]');
+    radios.forEach(function (radio) {
+        radio.checked = false;
     });
 
-*/
+}

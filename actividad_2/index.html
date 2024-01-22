@@ -9,7 +9,25 @@
     <link rel="icon" type="image/x-icon" href="/poke.ico">
 
 </head>
-<body>
+<body onload="recarga()">
+
+
+<label for="pokemon"> Pokemon </label>
+<input type="radio" id="pokemon" name="pokemon" value="pokemon" onclick="printList(this.id)"/>
+
+
+<label for="municipis"> Municipis</label>
+<input type="radio" id="municipis" name="municipis" value="municipis" onclick="printList(this.id)"/>
+
+
+<label for="movies"> Movies </label>
+<input type="radio" id="movies" name="movies" value="movies" onclick="printList(this.id)"/>
+
+
+<label for="meteorites"> Meteorites </label>
+<input type="radio" id="meteorites" name="meteorites" value="meteorites" onclick="printList(this.id)"/>
+
+<br><br>
 
 
 <button id="recargar" onclick="reload()"> Recargar</button>

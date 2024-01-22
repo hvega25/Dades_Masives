@@ -31,7 +31,7 @@ Promise.all(promesas)
         for (let f = 0; f < data[1].elements.length; f++) {
             nombres_muni.push(municipisData.elements[f].municipi_nom)
         }
-        //console.table(nombres_muni);
+        console.table(nombres_muni);
 
         const meteoritoData = data[2];
         let nombres_mete = [];
