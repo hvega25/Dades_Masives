@@ -1,8 +1,11 @@
+let poke_objecto;
+let poke1 = [];
 let lista = [];
-let movies = [], meteoritos = [], poke = [], muni = [];
+let movies = [], meteoritos = [], poke = [], muni = [], poke_tipos = [];
 
 //variable momentanea para guardar el dato cargado
 let carga = [], sel;
+let carga1 = [];
 
 //arreglo de json que serán usados para la carga de datos
 const urls = [
@@ -27,45 +30,104 @@ Promise.all(promesas)
         const pokemonData = data[0];
 
 
-        //nombres_poke.push(pokemonData.pokemon[g].name);
-        for (let g = 0; g < pokemonData.pokemon.length; g++) {
-            poke[g] = [pokemonData.pokemon[g].id, pokemonData.pokemon[g].img, pokemonData.pokemon[g].name, pokemonData.pokemon[g].weight]
-        }
+        pokemonData.pokemon.forEach(pokemon => {
+            poke.push([pokemon.id, pokemon.img, pokemon.name, pokemon.weight]);
+            poke_tipos.push(pokemon.type);
+        });
 
 
+        console.log(poke_objecto);
+        /* //nombres_poke.push(pokemonData.pokemon[g].name);
+         for (let g = 0; g < pokemonData.pokemon.length; g++) {
+             poke[g] = [pokemonData.pokemon[g].id, pokemonData.pokemon[g].img, pokemonData.pokemon[g].name, pokemonData.pokemon[g].weight]
+             poke_tipos[g] = pokemonData.pokemon[g].type;
+         }
+
+         //  console.table(poke_tipos);
+ */
         //Municipios
         const municipisData = data[1];
 
+        municipisData.elements.forEach(elements => {
+            muni.push([elements.ine, elements.municipi_escut, elements.municipi_nom, elements.altitud])
+        });
+        /*
         for (let f = 0; f < municipisData.elements.length; f++) {
             muni[f] = [municipisData.elements[f].ine, municipisData.elements[f].municipi_escut, municipisData.elements[f].municipi_nom, municipisData.elements[f].altitud];
         }
-
+*/
 
         //Meteoritos
         const meteoritoData = data[2];
 
+
+        meteoritoData.forEach(data => {
+            meteoritos.push([data.id, data.mass, data.name, data.fall])
+        })
+
+        /*
         for (let s = 0; s < meteoritoData.length; s++) {
             meteoritos[s] = [meteoritoData[s].id, meteoritoData[s].mass, meteoritoData[s].name, meteoritoData[s].fall];
         }
 
-
+*/
         //Movies
         const movieData = data[3];
 
+        movieData.movies.forEach(movie => {
+            movies.push([movie.year, movie.url, movie.title, movie.rating])
+        })
+        /*
         for (let o = 0; o < movieData.movies.length; o++) {
             movies[o] = [movieData.movies[o].year, movieData.movies[o].url, movieData.movies[o].title, movieData.movies[o].rating];
+        }*/
+
+        //  Esto es prueba
+        //carga de arreglos en un arreglo
+        for (let t = 0; t < meteoritoData.length; t++) {
+            lista[t] = [poke[t], muni[t], movies[t], meteoritos [t]];
         }
 
-        /*  Esto es prueba
-         //carga de arreglos en un arreglo
-          for (let t = 0; t < meteoritoData.length; t++) {
-              lista[t] = [poke[t], muni[t], movies[t], meteoritos [t]];
-          }
+        //console.table (lista[0][0]);
+        //  console.table(lista);
 
-          //console.table (lista[0][0]);
-          //console.table(lista);
 
-          //printList();*/
+        //PARTE FINAL CREACION DEL OBJECTO
+        let lista_objectos = lista.map(elemento => ({element: elemento}));
+
+
+      //  console.log(lista_objectos);
+
+        //printList();
+
+
+        /*
+        //  console.log(poke[0][2])
+
+
+             //crea un arreglo de arreglos
+             for (let t = 0; t < meteoritoData.length; t++) {
+                 for (let k = 0; k < meteoritoData[t].length; k++) {
+                     lista[t][k] = [poke[t][k], muni[t][k], movies[t][k], meteoritos [t][k]];
+                 }
+             }
+
+             console.table(lista);
+             //let prueba = [];
+
+
+                         //prueba para saber si funciona el retorno
+                         for (let g = 0; g < lista.length; g++) {
+                             if (!(lista[g][0] === undefined)) {
+                                 prueba[g] = lista[g][0];
+                             }
+                         }
+
+                         console.log(prueba);
+                         // console.log(lista[1][0]); lista[aqui iterar][arreglo a buscar]
+                 */
+
+
     })
     .catch(error => console.error("Error al cargar los datos:", error));
 
@@ -92,6 +154,9 @@ function ordenar_ascendente() {
     printList1(carga, sel);
 
 
+    carga1.sort((a, b) => a[2].localeCompare(b[2]));
+    printList1(carga1, sel);
+
 }
 
 
@@ -110,6 +175,15 @@ function ordenar_descendente() {
 
     printList1(carga, sel);
 
+
+    console.log("Ordenado descendente por nombre");
+    carga1.sort((a, b) => a[2].localeCompare(b[2]));
+    carga1.reverse((a, b) => a[2].localeCompare(b[2]));
+
+
+    printList1(carga1, sel);
+
+
 }
 
 
@@ -117,7 +191,7 @@ function searchList() {
     var buscar = prompt("Ingrese lo que desea buscar");
 
     let lista_encontrados = [];
-    let poke;
+
 
     let contador = 0;
 
@@ -132,7 +206,35 @@ function searchList() {
         }
     }
 
+
     printList1(lista_encontrados, sel)
+}
+
+function searchListModificada(buscar) {
+    //var buscar = prompt("Ingrese lo que desea buscar");
+
+    let lista = document.getElementById("resultados");
+    lista.innerHTML = "";
+
+    let lista_encontrados = [];
+    let poke;
+
+    let contador = 0;
+
+
+    //importante al crear la expresión
+    const ex = new RegExp(buscar, 'gi');
+
+    for (let i = 0; i < carga.length; i++) {
+        let nombre = carga[i][2];
+        if (nombre.match(ex)) {
+            lista_encontrados[contador] = carga[i]
+            contador++;
+        }
+    }
+    carga1 = lista_encontrados;
+
+    printList1(lista_encontrados, sel);
 }
 
 
@@ -141,9 +243,12 @@ function calcular_mediana() {
 
 
     for (let a = 0; a < carga.length; a++) {
-        if (sel === "municipis" || sel === "movies") {
-            if (carga[a][3].trim() === "" ) {
-                  peso_mediana = peso_mediana + 0;
+        //   console.log(carga[a][3]);
+
+
+        if (sel === "municipis") {
+            if (carga[a][3].trim() === "") {
+                peso_mediana = peso_mediana + 0;
             } else {
                 peso_mediana = peso_mediana + parseFloat(carga[a][3]);
             }
@@ -155,12 +260,16 @@ function calcular_mediana() {
         }
 
         if (sel === "meteorites") {
-         if (carga[a][1] == undefined ) {
-                  peso_mediana = peso_mediana + 0;
+            if (carga[a][1] == undefined) {
+                peso_mediana = peso_mediana + 0;
             } else {
                 peso_mediana = peso_mediana + parseFloat(carga[a][1]);
             }
         }
+        if (sel === "movies") {
+            peso_mediana = peso_mediana + parseFloat(carga[a][3]);
+        }
+
 
     }
 
@@ -248,6 +357,8 @@ function printList(seleccion) {
 
     switch (seleccion) {
         case opciones[0]:
+
+
             carga = poke;
 
             columna += `<tr>
@@ -341,3 +452,12 @@ function recarga() {
     });
 
 }
+
+
+//Paso 3
+
+
+let inputSearch = document.getElementById('txtSearch')
+inputSearch.addEventListener('input', (e) => {
+    searchListModificada(inputSearch.value)
+});

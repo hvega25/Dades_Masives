@@ -7,10 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Actividad 2</title>
     <link rel="icon" type="image/x-icon" href="/poke.ico">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <body onload="recarga()">
 
+
+<div class="chart-container" style="position: relative; width:700px">
+    <canvas id="myChart"></canvas>
+</div>
 
 <label for="pokemon"> Pokemon </label>
 <input type="radio" id="pokemon" name="pokemon" value="pokemon" onclick="printList(this.id)"/>
@@ -26,6 +31,11 @@
 
 <label for="meteorites"> Meteorites </label>
 <input type="radio" id="meteorites" name="meteorites" value="meteorites" onclick="printList(this.id)"/>
+
+
+<input type="text" value="" id="txtSearch" />
+
+
 
 <br><br>
 
