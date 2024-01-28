@@ -77,10 +77,6 @@ Promise.all(promesas)
         movieData.movies.forEach(movie => {
             movies.push([movie.year, movie.url, movie.title, movie.rating])
         })
-        /*
-        for (let o = 0; o < movieData.movies.length; o++) {
-            movies[o] = [movieData.movies[o].year, movieData.movies[o].url, movieData.movies[o].title, movieData.movies[o].rating];
-        }*/
 
         //  Esto es prueba
         //carga de arreglos en un arreglo
@@ -88,44 +84,9 @@ Promise.all(promesas)
             lista[t] = [poke[t], muni[t], movies[t], meteoritos [t]];
         }
 
-        //console.table (lista[0][0]);
-        //  console.table(lista);
-
 
         //PARTE FINAL CREACION DEL OBJECTO
         let lista_objectos = lista.map(elemento => ({element: elemento}));
-
-
-      //  console.log(lista_objectos);
-
-        //printList();
-
-
-        /*
-        //  console.log(poke[0][2])
-
-
-             //crea un arreglo de arreglos
-             for (let t = 0; t < meteoritoData.length; t++) {
-                 for (let k = 0; k < meteoritoData[t].length; k++) {
-                     lista[t][k] = [poke[t][k], muni[t][k], movies[t][k], meteoritos [t][k]];
-                 }
-             }
-
-             console.table(lista);
-             //let prueba = [];
-
-
-                         //prueba para saber si funciona el retorno
-                         for (let g = 0; g < lista.length; g++) {
-                             if (!(lista[g][0] === undefined)) {
-                                 prueba[g] = lista[g][0];
-                             }
-                         }
-
-                         console.log(prueba);
-                         // console.log(lista[1][0]); lista[aqui iterar][arreglo a buscar]
-                 */
 
 
     })
@@ -153,12 +114,34 @@ function ordenar_ascendente() {
     carga.sort((a, b) => a[2].localeCompare(b[2]));
     printList1(carga, sel);
 
+    if (carga1.length >= 1) {
+        carga1.sort((a, b) => a[2].localeCompare(b[2]));
+        printList1(carga1, sel);
 
-    carga1.sort((a, b) => a[2].localeCompare(b[2]));
-    printList1(carga1, sel);
+    }
 
 }
 
+function ordenar_ascendente_mejorada(opcion) {
+    console.log(opcion);
+        //elegir que tabla se ordena
+        if (sel !== 3) {
+            //elegir que columna es para saber si es string o número
+
+            if (parseFloat(opcion) === 0 || parseFloat(opcion) === 3) {
+
+                carga.sort((a, b) => parseFloat(a[opcion]) - parseFloat([b[opcion]]));
+                printList1(carga, sel);
+
+            } else {
+                carga.sort((a, b) => a[opcion].localeCompare(b[opcion]));
+                printList1(carga, sel);
+
+            }
+
+
+        }
+}
 
 function ordenar_descendente() {
     /*
@@ -175,14 +158,16 @@ function ordenar_descendente() {
 
     printList1(carga, sel);
 
+    if (carga1.length >= 1) {
+        console.log("Ordenado descendente por nombre");
+        carga1.sort((a, b) => a[2].localeCompare(b[2]));
+        carga1.reverse((a, b) => a[2].localeCompare(b[2]));
 
-    console.log("Ordenado descendente por nombre");
-    carga1.sort((a, b) => a[2].localeCompare(b[2]));
-    carga1.reverse((a, b) => a[2].localeCompare(b[2]));
+
+        printList1(carga1, sel);
 
 
-    printList1(carga1, sel);
-
+    }
 
 }
 
@@ -232,9 +217,13 @@ function searchListModificada(buscar) {
             contador++;
         }
     }
-    carga1 = lista_encontrados;
 
-    printList1(lista_encontrados, sel);
+
+    if (lista_encontrados.length >= 1) {
+        carga1 = lista_encontrados;
+        printList1(lista_encontrados, sel);
+    }
+
 }
 
 
@@ -332,6 +321,11 @@ function printList1(array, sel) {
 }
 
 
+function busqueda_click(opcion) {
+
+
+}
+
 //imprime en pantalla una pantalla que se muestra la tabla
 function printList(seleccion) {
 
@@ -359,13 +353,11 @@ function printList(seleccion) {
         case opciones[0]:
 
 
-            carga = poke;
-
             columna += `<tr>
-        <th> ${cabeceras[0][0]} </th>
-        <th> ${cabeceras[0][1]} </th>
-        <th> ${cabeceras[0][2]} </th>
-        <th> ${cabeceras[0][3]} </th>
+        <th id="0" onclick="ordenar_ascendente_mejorada(this.id) "> ${cabeceras[0][0]} </th>
+        <th id="1">  ${cabeceras[0][1]} </th>
+        <th id="2" onclick="ordenar_ascendente_mejorada(this.id) "> ${cabeceras[0][2]} </th>
+        <th id="3" onclick="ordenar_ascendente_mejorada(this.id) "> ${cabeceras[0][3]} </th>
     </tr>`;
 
 
@@ -377,16 +369,16 @@ function printList(seleccion) {
             <td> '${poke[i][3]}' </td>
         </tr>`;
             }
-
+            carga = poke;
             break;
         case opciones[1]:
 
             carga = muni;
             columna += `<tr>
-        <th> ${cabeceras[1][0]} </th>
-        <th> ${cabeceras[1][1]} </th>
-        <th> ${cabeceras[1][2]} </th>
-        <th> ${cabeceras[1][3]} </th>
+        <th id="0" onclick="ordenar_ascendente_mejorada(0) "> ${cabeceras[1][0]} </th>
+        <th id="1" >  ${cabeceras[1][1]} </th>
+        <th id="2" onclick="ordenar_ascendente_mejorada(2) "> ${cabeceras[1][2]} </th>
+        <th id="3" onclick="ordenar_ascendente_mejorada(3) "> ${cabeceras[1][3]} </th>
     </tr>`;
 
 
@@ -403,10 +395,10 @@ function printList(seleccion) {
         case opciones[2]:
             carga = movies;
             columna += `<tr>
-        <th> ${cabeceras[2][0]} </th>
-        <th> ${cabeceras[2][1]} </th>
-        <th> ${cabeceras[2][2]} </th>
-        <th> ${cabeceras[2][3]} </th>
+        <th id="0" onclick="ordenar_ascendente_mejorada(0) "> ${cabeceras[2][0]} </th>
+        <th id="1"> ${cabeceras[2][1]} </th>
+        <th id="2" onclick="ordenar_ascendente_mejorada(2) "> ${cabeceras[2][2]} </th>
+        <th id="3" onclick="ordenar_ascendente_mejorada(3) "> ${cabeceras[2][3]} </th>
     </tr>`;
 
             for (let i = 0; i < movies.length; i++) {
@@ -421,10 +413,10 @@ function printList(seleccion) {
         case opciones[3]:
             carga = meteoritos;
             columna += `<tr>
-        <th> ${cabeceras[3][0]} </th>
-        <th> ${cabeceras[3][1]} </th>
-        <th> ${cabeceras[3][2]} </th>
-        <th> ${cabeceras[3][3]} </th>
+        <th id="0" onclick="ordenar_ascendente_mejorada(0) "> ${cabeceras[3][0]} </th>
+        <th id="1" onclick="ordenar_ascendente_mejorada(1) "> ${cabeceras[3][1]} </th>
+        <th id="2" onclick="ordenar_ascendente_mejorada(2) "> ${cabeceras[3][2]} </th>
+        <th id="3" onclick="ordenar_ascendente_mejorada(3) "> ${cabeceras[3][3]} </th>
     </tr>`;
             for (let i = 0; i < meteoritos.length; i++) {
                 columna += `<tr>
@@ -461,3 +453,4 @@ let inputSearch = document.getElementById('txtSearch')
 inputSearch.addEventListener('input', (e) => {
     searchListModificada(inputSearch.value)
 });
+
