@@ -123,24 +123,35 @@ function ordenar_ascendente() {
 }
 
 function ordenar_ascendente_mejorada(opcion) {
-    console.log(opcion);
-        //elegir que tabla se ordena
-        if (sel !== 3) {
-            //elegir que columna es para saber si es string o número
 
-            if (parseFloat(opcion) === 0 || parseFloat(opcion) === 3) {
+    //elegir que tabla se ordena
+    if (sel !== "meteorites") {
+        //elegir que columna es para saber si es string o número
 
-                carga.sort((a, b) => parseFloat(a[opcion]) - parseFloat([b[opcion]]));
-                printList1(carga, sel);
+        if (parseFloat(opcion) === 0 || parseFloat(opcion) === 3) {
 
-            } else {
-                carga.sort((a, b) => a[opcion].localeCompare(b[opcion]));
-                printList1(carga, sel);
+            carga.sort((a, b) => parseFloat(a[opcion]) - parseFloat([b[opcion]]));
+            printList1(carga, sel);
 
-            }
-
+        } else {
+            carga.sort((a, b) => a[opcion].localeCompare(b[opcion]));
+            printList1(carga, sel);
 
         }
+
+
+    } else {
+        if (parseFloat(opcion) === 0 || parseFloat(opcion) === 3 || parseFloat(opcion) === 1) {
+
+            carga.sort((a, b) => parseFloat(a[opcion]) - parseFloat([b[opcion]]));
+            printList1(carga, sel);
+
+        } else {
+            carga.sort((a, b) => a[opcion].localeCompare(b[opcion]));
+            printList1(carga, sel);
+
+        }
+    }
 }
 
 function ordenar_descendente() {
